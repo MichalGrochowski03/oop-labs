@@ -5,11 +5,40 @@ internal class Program
     {
         Console.WriteLine("Starting Simulator!\n");
 
-        TestCreatures();
-        Console.WriteLine("\n");
-        TestDirections();
+        //TestCreatures();
+        //Console.WriteLine("\n");
+        //TestDirections();
+
+        //Elf e = new() { Name = "Elandor", Level = 5 };
+        //Creature e = new Orc("Elandor", 5, 7);
+        //Console.WriteLine(e.GetType());
+        //e.SayHi();
+        //e.Upgrade();
+        //Console.WriteLine(e.Info);
+        //if (e is Elf elf) elf.Sing();
+        //else Console.WriteLine($"{e.Name} is not an ELf");
+
+        //e.Go(Direction.Left);
+
+        //object o = 5;
+        //Console.WriteLine(o.GetType());
+        //o = e;
+        //Console.WriteLine(o.GetType()); o = e;        
+
+        object s = "I am object";
+        object i = 5;
+        object e = new Elf() { Name = "Legolas", Agility = 3 };
+
+        object[] objects = { s, i, e };
+
+        foreach (var o in objects)
+        {
+            Console.WriteLine(o);
+        }
     }
 
+
+/*
     static void TestCreatures()
     {
         Creature c = new() { Name = "   Shrek    ", Level = 20 };
@@ -62,5 +91,5 @@ internal class Program
 
         Console.WriteLine("\n* xxxdR lyyLTyu");
         c.Go("xxxdR lyyLTyu");
-    }
+    }*/
 }
