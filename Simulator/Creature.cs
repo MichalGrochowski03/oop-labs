@@ -51,7 +51,7 @@ public abstract class Creature
 
     }
 
-    private int ValidateLevel(int inputLevel)
+    public  int ValidateLevel(int inputLevel)
     {
         if (inputLevel < 1) return 1;
         if (inputLevel > 10) return 10;
@@ -91,7 +91,7 @@ public abstract class Creature
 
 
     public string Info => $"{Name}, [{Level}]";
-
+    public abstract int Power { get; }
 
 
 }
