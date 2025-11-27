@@ -4,27 +4,15 @@ internal class Program
     static void Main(string[] args)
     {
         Console.WriteLine("Starting Simulator!\n");
-
-        TestElfsAndOrcs();
-    
-
-        object s = "I am object";
-        object i = 5;
-        object e = new Elf() { Name = "Legolas", Agility = 3 };
-
-        object[] objects = { s, i, e };
-
-        foreach (var o in objects)
-        {
-            Console.WriteLine(o);
-        }
+        TestValidators();
     }
 
-    static void TestElfsAndOrcs()
+    static void TestValidators()
     {
         Console.WriteLine("HUNT TEST\n");
-        var o = new Orc() { Name = "Gorbag", Rage = 7 };
+        var o = new Orc("Gorbag", rage: 7);
         o.SayHi();
+
         for (int i = 0; i < 10; i++)
         {
             o.Hunt();
@@ -34,6 +22,7 @@ internal class Program
         Console.WriteLine("\nSING TEST\n");
         var e = new Elf("Legolas", agility: 2);
         e.SayHi();
+
         for (int i = 0; i < 10; i++)
         {
             e.Sing();
@@ -41,16 +30,15 @@ internal class Program
         }
 
         Console.WriteLine("\nPOWER TEST\n");
-        Creature[] creatures = {
-        o,
-        e,
-        new Orc("Morgash", 3, 8),
-        new Elf("Elandor", 5, 3)
-    };
-        foreach (Creature creature in creatures)
+        Creature[] creatures =
         {
-            Console.WriteLine($"{creature.Name,-15}: {creature.Power}");
-        }
-    }
+            o,
+            e,
+            new Orc("Morgash", 3, 8),
+            new Elf("Elandor", 5, 3)
+        };
 
+        foreach (Creature c in creatures)
+            Console.WriteLine($"{c.Name,-15}: {c.Power}");
+    }
 }

@@ -8,7 +8,7 @@ public class Elf : Creature
     public int Agility
     {
         get => _agility;
-        private set => _agility = Math.Clamp(value, 0, 10);
+        private set => _agility = Validator.Limiter(value, 0, 10);
     }
 
     public Elf() : base()
@@ -28,20 +28,18 @@ public class Elf : Creature
         _singCount++;
 
         if (_singCount % 3 == 0)
-        {
-            Agility = Math.Clamp(Agility + 1, 0, 10);
-        }
+            Agility = Agility + 1;
     }
 
     public override void SayHi()
     {
-        Console.WriteLine($"Hi, I'm {Name}, my level is {Level}, agility {Agility}.");
+        Console.WriteLine(
+            $"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}."
+        );
     }
 
     public override int Power => 8 * Level + 2 * Agility;
 
     public override string ToString()
-    {
-        return $"Hi, I'm {Name}, my level is {Level}, agility {Agility}.";
-    }
+        => $"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}.";
 }

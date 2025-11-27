@@ -2,18 +2,19 @@
 
 public abstract class Creature
 {
-    private string _name;
+    private string _name = "";
     private int _level;
+
     public string Name
     {
         get => _name;
-        init => _name = ValidateAndFormatName(value);
+        init => _name = Validator.Shortener(value, 3, 25, '#');
     }
 
     public int Level
     {
         get => _level;
-        init => _level = ValidateLevel(value);
+        init => _level = Validator.Limiter(value, 1, 10);
     }
 
     public Creature()
@@ -28,43 +29,11 @@ public abstract class Creature
         Level = level;
     }
 
-    private string ValidateAndFormatName(string inputName)
-    {
-        string processedName = (inputName ?? "").Trim(); // (inputName ?? "") obsługuje null
-
-        if (processedName.Length > 25)
-        {
-            processedName = processedName.Substring(0, 25).TrimEnd();
-        }
-
-        if (processedName.Length < 3)
-        {
-            processedName = processedName.PadRight(3, '#');
-        }
-
-        if (processedName.Length > 0 && char.IsLower(processedName[0]))
-        {
-            processedName = char.ToUpper(processedName[0]) + processedName.Substring(1);
-        }
-
-        return processedName;
-
-    }
-
-    public  int ValidateLevel(int inputLevel)
-    {
-        if (inputLevel < 1) return 1;
-        if (inputLevel > 10) return 10;
-        return inputLevel;
-    }
-
     public void Upgrade()
     {
-        if (Level < 10)
-        {
-            _level += 1;
-        }
+        _level = Validator.Limiter(Level + 1, 1, 10);
     }
+
 
     public void Go(Direction direction)
     {

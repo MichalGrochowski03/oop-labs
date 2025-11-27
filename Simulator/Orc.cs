@@ -8,7 +8,7 @@ public class Orc : Creature
     public int Rage
     {
         get => _rage;
-        private set => _rage = Math.Clamp(value, 0, 10);
+        private set => _rage = Validator.Limiter(value, 0, 10);
     }
 
     public Orc() : base()
@@ -28,14 +28,14 @@ public class Orc : Creature
         _huntCount++;
 
         if (_huntCount % 2 == 0)
-        {
-            Rage = Math.Clamp(Rage + 1, 0, 10);
-        }
+            Rage = Rage + 1;
     }
 
     public override void SayHi()
     {
-        Console.WriteLine($"Hi, I'm {Name}, my level is {Level}, rage {Rage}.");
+        Console.WriteLine(
+            $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}."
+        );
     }
 
     public override int Power => 7 * Level + 3 * Rage;
