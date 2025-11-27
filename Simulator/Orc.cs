@@ -11,10 +11,7 @@ public class Orc : Creature
         private set => _rage = Validator.Limiter(value, 0, 10);
     }
 
-    public Orc() : base()
-    {
-        Rage = 1;
-    }
+    public Orc() : base() { Rage = 1; }
 
     public Orc(string name = "Unknown", int level = 1, int rage = 1)
         : base(name, level)
@@ -39,4 +36,10 @@ public class Orc : Creature
     }
 
     public override int Power => 7 * Level + 3 * Rage;
+
+    // 🔥 NOWE — implementacja abstrakcyjnej Info
+    public override string Info => $"{Name} [{Level}][{Rage}]";
+
+    public override string ToString()
+        => base.ToString();
 }
