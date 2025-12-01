@@ -1,15 +1,20 @@
 ﻿using Simulator;
+using Simulator.Maps;
 
 namespace Runner;
 internal class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Starting Runner!\n");
 
-        TestObjectsToString();
-        TestValidators();
-        TestMovement();
+       // TestObjectsToString();
+       // TestValidators();
+       // TestMovement();
+
+        Point p = new(10, 25);
+        Console.WriteLine(p.Next(Direction.Right));          // (11, 25)
+        Console.WriteLine(p.NextDiagonal(Direction.Right));  // (11, 24)
+
     }
 
     static void TestObjectsToString()
@@ -27,6 +32,8 @@ internal class Program
 
 
     }
+
+
 
     static void TestValidators()
     {
@@ -83,4 +90,6 @@ internal class Program
         var result2 = c.Go("udlr");
         Console.WriteLine(string.Join(", ", result2));
     }
+
+
 }
