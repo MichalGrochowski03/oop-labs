@@ -34,38 +34,28 @@ public abstract class Creature
         _level = Validator.Limiter(Level + 1, 1, 10);
     }
 
+    // --------------- MODYFIKACJE GO() -----------------
 
-    public void Go(Direction direction)
+    public string Go(Direction direction)
+        => $"{direction.ToString().ToLower()}";
+
+    public string[] Go(Direction[] directions)
+        => directions.Select(d => Go(d)).ToArray();
+
+    public string[] Go(string directionsString)
     {
-        string lowerDirection = direction.ToString().ToLower();
-
-        Console.WriteLine($"{Name} goes {lowerDirection}.");
+        Direction[] dirs = DirectionParser.Parse(directionsString);
+        return Go(dirs);
     }
 
-    public void Go(Direction[] directions)
-    {
-        foreach (Direction direction in directions)
-        {
-            Go(direction);
-        }
-    }
+    // --------------- Greeting -----------------
 
-    public void Go(string directionsString)
-    {
-        Direction[] directions = DirectionParser.Parse(directionsString);
-        Go(directions);
-    }
-
-    public abstract void SayHi();
-
+    public abstract string Greeting();
 
     public abstract string Info { get; }
+
     public override string ToString()
-    {
-        return $"{GetType().Name.ToUpper()}: {Info}";
-    }
+        => $"{GetType().Name.ToUpper()}: {Info}";
 
     public abstract int Power { get; }
-
-
 }

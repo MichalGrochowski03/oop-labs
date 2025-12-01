@@ -11,7 +11,10 @@ public class Elf : Creature
         private set => _agility = Validator.Limiter(value, 0, 10);
     }
 
-    public Elf() : base() { Agility = 1; }
+    public Elf() : base()
+    {
+        Agility = 1;
+    }
 
     public Elf(string name = "Unknown", int level = 1, int agility = 1)
         : base(name, level)
@@ -21,23 +24,17 @@ public class Elf : Creature
 
     public void Sing()
     {
-        Console.WriteLine($"{Name} is singing.");
         _singCount++;
 
         if (_singCount % 3 == 0)
             Agility = Agility + 1;
     }
 
-    public override void SayHi()
-    {
-        Console.WriteLine(
-            $"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}."
-        );
-    }
+    public override string Greeting()
+        => $"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}.";
 
     public override int Power => 8 * Level + 2 * Agility;
 
- 
     public override string Info => $"{Name} [{Level}][{Agility}]";
 
     public override string ToString()
