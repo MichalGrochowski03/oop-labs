@@ -34,7 +34,6 @@ public abstract class Creature
         _level = Validator.Limiter(Level + 1, 1, 10);
     }
 
-    // --------------- MODYFIKACJE GO() -----------------
 
     public string Go(Direction direction)
         => $"{direction.ToString().ToLower()}";
@@ -48,7 +47,6 @@ public abstract class Creature
         return Go(dirs);
     }
 
-    // --------------- Greeting -----------------
 
     public abstract string Greeting();
 
