@@ -22,7 +22,6 @@
 
         public Point? Position { get; private set; }
 
-
         public Creature()
         {
             Name = "Unknown";
@@ -40,7 +39,6 @@
             _level = Validator.Limiter(Level + 1, 1, 10);
         }
 
-
         public void Go(Direction direction)
         {
             if (CurrentMap == null || Position == null)
@@ -52,8 +50,6 @@
             CurrentMap.Move(this, from, to);
             Position = to;
         }
-
-
         public void AssignMap(Simulator.Maps.Map map, Point start)
         {
             if (CurrentMap != null)
@@ -71,6 +67,8 @@
         public abstract string Greeting();
 
         public abstract string Info { get; }
+
+        public virtual char Symbol => '?';
 
         public override string ToString()
             => $"{GetType().Name.ToUpper()}: {Info}";
