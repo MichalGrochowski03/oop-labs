@@ -1,59 +1,80 @@
-﻿namespace Simulator;
-
-public abstract class Creature
+﻿namespace Simulator
 {
-    private string _name = "";
-    private int _level;
-
-    public string Name
+    public abstract class Creature
     {
-        get => _name;
-        init => _name = Validator.Shortener(value, 3, 25, '#');
+        private string _name = "";
+        private int _level;
+
+        public string Name
+        {
+            get => _name;
+            init => _name = Validator.Shortener(value, 3, 25, '#');
+        }
+
+        public int Level
+        {
+            get => _level;
+            init => _level = Validator.Limiter(value, 1, 10);
+        }
+
+
+        public Simulator.Maps.Map? CurrentMap { get; private set; }
+
+        public Point? Position { get; private set; }
+
+
+        public Creature()
+        {
+            Name = "Unknown";
+            Level = 1;
+        }
+
+        public Creature(string name, int level = 1)
+        {
+            Name = name;
+            Level = level;
+        }
+
+        public void Upgrade()
+        {
+            _level = Validator.Limiter(Level + 1, 1, 10);
+        }
+
+
+        public void Go(Direction direction)
+        {
+            if (CurrentMap == null || Position == null)
+                return;
+
+            var from = Position.Value;
+            var to = CurrentMap.Next(from, direction);
+
+            CurrentMap.Move(this, from, to);
+            Position = to;
+        }
+
+
+        public void AssignMap(Simulator.Maps.Map map, Point start)
+        {
+            if (CurrentMap != null)
+                throw new InvalidOperationException("Creature is already assigned to a map.");
+
+            if (!map.Exist(start))
+                throw new ArgumentException("Start position is outside the map.");
+
+            map.Add(this, start);
+
+            CurrentMap = map;
+            Position = start;
+        }
+
+        public abstract string Greeting();
+
+        public abstract string Info { get; }
+
+        public override string ToString()
+            => $"{GetType().Name.ToUpper()}: {Info}";
+
+        public abstract int Power { get; }
     }
-
-    public int Level
-    {
-        get => _level;
-        init => _level = Validator.Limiter(value, 1, 10);
-    }
-
-    public Creature()
-    {
-        Name = "Unknown";
-        Level = 1;
-    }
-
-    public Creature(string name, int level = 1)
-    {
-        Name = name;
-        Level = level;
-    }
-
-    public void Upgrade()
-    {
-        _level = Validator.Limiter(Level + 1, 1, 10);
-    }
-
-
-    public string Go(Direction direction)
-        => $"{direction.ToString().ToLower()}";
-
-    public string[] Go(Direction[] directions)
-        => directions.Select(d => Go(d)).ToArray();
-
-    public string[] Go(string directionsString)
-    {
-        Direction[] dirs = DirectionParser.Parse(directionsString);
-        return Go(dirs);
-    }
-
-
-    public abstract string Greeting();
-
-    public abstract string Info { get; }
-
-    public override string ToString()
-        => $"{GetType().Name.ToUpper()}: {Info}";
-
-    public abstract int Power { get; }
 }

@@ -1,43 +1,19 @@
 ﻿namespace Simulator.Maps
 {
+    /// <summary>
+    /// Mała kwadratowa mapa o wymiarach 5–20.
+    /// Logika ruchu pochodzi z klasy bazowej Map.
+    /// </summary>
     public class SmallSquareMap : Map
     {
-        public int Size { get; }
-
-        private readonly Rectangle _bounds;
+        public int Size => SizeX;
 
         public SmallSquareMap(int size)
+            : base(size, size)
         {
-            if (size < 5 || size > 20)
+            if (size > 20)
                 throw new ArgumentOutOfRangeException(nameof(size),
-                    "SmallSquareMap size must be between 5 and 20.");
-
-            Size = size;
-
-            _bounds = new Rectangle(0, 0, Size - 1, Size - 1);
+                    "SmallSquareMap supports sizes up to 20.");
         }
-
-        public override bool Exist(Point p)
-        {
-            return _bounds.Contains(p);
-        }
-
-
-        public override Point Next(Point p, Direction d)
-        {
-            Point np = p.Next(d);
-
-            return Exist(np) ? np : p;
-        }
-
-        public override Point NextDiagonal(Point p, Direction d)
-        {
-            Point np = p.NextDiagonal(d);
-
-            return Exist(np) ? np : p;
-        }
-
-        public override string ToString()
-            => $"SmallSquareMap {Size}x{Size}";
     }
 }

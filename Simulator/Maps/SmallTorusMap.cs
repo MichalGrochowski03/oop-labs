@@ -2,86 +2,51 @@
 {
     public class SmallTorusMap : Map
     {
-        public int Size { get; }
+        public int Size => SizeX;
 
         public SmallTorusMap(int size)
+            : this(size, size)
         {
-            if (size < 5 || size > 20)
-                throw new ArgumentOutOfRangeException(nameof(size),
-                    "Size must be between 5 and 20.");
-
-            Size = size;
         }
 
-        public override bool Exist(Point p)
+        public SmallTorusMap(int sizeX, int sizeY)
+            : base(sizeX, sizeY)
         {
-            return
-                p.X >= 0 && p.X < Size &&
-                p.Y >= 0 && p.Y < Size;
+            if (sizeX > 20)
+                throw new ArgumentOutOfRangeException(nameof(sizeX));
+            if (sizeY > 20)
+                throw new ArgumentOutOfRangeException(nameof(sizeY));
         }
 
-        public override Point Next(Point p, Direction d)
+        private Point Wrap(int x, int y)
         {
-            int x = p.X;
-            int y = p.Y;
+            int nx = ((x % SizeX) + SizeX) % SizeX;
+            int ny = ((y % SizeY) + SizeY) % SizeY;
+            return new Point(nx, ny);
+        }
 
-            switch (d)
+        public override Point Next(Point p, Direction direction)
+        {
+            return direction switch
             {
-                case Direction.Up:
-                    y += 1;
-                    break;
-
-                case Direction.Down:
-                    y -= 1;
-                    break;
-
-                case Direction.Left:
-                    x -= 1;
-                    break;
-
-                case Direction.Right:
-                    x += 1;
-                    break;
-            }
-
-            x = (x + Size) % Size;
-            y = (y + Size) % Size;
-
-            return new Point(x, y);
+                Direction.Up => Wrap(p.X, p.Y + 1),
+                Direction.Right => Wrap(p.X + 1, p.Y),
+                Direction.Down => Wrap(p.X, p.Y - 1),
+                Direction.Left => Wrap(p.X - 1, p.Y),
+                _ => p
+            };
         }
 
-        public override Point NextDiagonal(Point p, Direction d)
+        public override Point NextDiagonal(Point p, Direction direction)
         {
-            int x = p.X;
-            int y = p.Y;
-
-            switch (d)
+            return direction switch
             {
-                case Direction.Up:
-                    x += 1;
-                    y += 1;
-                    break;
-
-                case Direction.Down:
-                    x -= 1;
-                    y -= 1;
-                    break;
-
-                case Direction.Left:
-                    x -= 1;
-                    y += 1;
-                    break;
-
-                case Direction.Right:
-                    x += 1;
-                    y -= 1;
-                    break;
-            }
-
-            x = (x + Size) % Size;
-            y = (y + Size) % Size;
-
-            return new Point(x, y);
+                Direction.Up => Wrap(p.X + 1, p.Y + 1),
+                Direction.Right => Wrap(p.X + 1, p.Y - 1),
+                Direction.Down => Wrap(p.X - 1, p.Y - 1),
+                Direction.Left => Wrap(p.X - 1, p.Y + 1),
+                _ => p
+            };
         }
     }
 }
