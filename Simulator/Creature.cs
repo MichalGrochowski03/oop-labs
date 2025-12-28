@@ -39,7 +39,7 @@ namespace Simulator
             _level = Validator.Limiter(Level + 1, 1, 10);
         }
 
-        public void Go(Direction direction)
+        public virtual void Go(Direction direction)
         {
             if (CurrentMap == null || Position == null)
                 return;
@@ -51,15 +51,13 @@ namespace Simulator
             Position = to;
         }
 
-        public void AssignMap(Map map, Point start)
+        public virtual void AssignMap(Map map, Point start)
         {
             if (CurrentMap != null)
-                throw new InvalidOperationException(
-                    "Creature is already assigned to a map.");
+                throw new InvalidOperationException("Creature is already assigned to a map.");
 
             if (!map.Exist(start))
-                throw new ArgumentException(
-                    "Start position is outside the map.");
+                throw new ArgumentException("Start position is outside the map.");
 
             map.Add(this, start);
 
@@ -68,7 +66,6 @@ namespace Simulator
         }
 
         public abstract string Greeting();
-
         public abstract string Info { get; }
 
         public virtual char Symbol => '?';

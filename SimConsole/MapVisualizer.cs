@@ -46,8 +46,7 @@ public class MapVisualizer
         for (int x = 0; x < width; x++)
         {
             Console.Write(Box.Horizontal);
-            if (x < width - 1)
-                Console.Write(Box.TopMid);
+            if (x < width - 1) Console.Write(Box.TopMid);
         }
         Console.WriteLine(Box.TopRight);
 
@@ -57,8 +56,7 @@ public class MapVisualizer
             for (int x = 0; x < width; x++)
             {
                 Console.Write(cells[y, x]);
-                if (x < width - 1)
-                    Console.Write(Box.Vertical);
+                if (x < width - 1) Console.Write(Box.Vertical);
             }
             Console.WriteLine(Box.Vertical);
 
@@ -68,8 +66,7 @@ public class MapVisualizer
                 for (int x = 0; x < width; x++)
                 {
                     Console.Write(Box.Horizontal);
-                    if (x < width - 1)
-                        Console.Write(Box.Cross);
+                    if (x < width - 1) Console.Write(Box.Cross);
                 }
                 Console.WriteLine(Box.MidRight);
             }
@@ -79,8 +76,7 @@ public class MapVisualizer
         for (int x = 0; x < width; x++)
         {
             Console.Write(Box.Horizontal);
-            if (x < width - 1)
-                Console.Write(Box.BottomMid);
+            if (x < width - 1) Console.Write(Box.BottomMid);
         }
         Console.WriteLine(Box.BottomRight);
     }

@@ -5,13 +5,9 @@ namespace Simulator
     public class Simulation
     {
         public Map Map { get; }
-
         public List<IMappable> Objects { get; }
-
         public List<Point> Positions { get; }
-
         public string Moves { get; }
-
         public bool Finished { get; private set; } = false;
 
         private readonly Direction[] _parsedMoves;
@@ -33,25 +29,17 @@ namespace Simulator
                 if (_parsedMoves.Length == 0)
                     return "";
 
-                return _parsedMoves[_moveIndex]
-                    .ToString()
-                    .ToLower();
+                return _parsedMoves[_moveIndex].ToString().ToLower();
             }
         }
 
-        public Simulation(
-            Map map,
-            List<IMappable> objects,
-            List<Point> positions,
-            string moves)
+        public Simulation(Map map, List<IMappable> objects, List<Point> positions, string moves)
         {
             if (objects == null || objects.Count == 0)
-                throw new ArgumentException(
-                    "Object list cannot be empty.");
+                throw new ArgumentException("Object list cannot be empty.");
 
             if (objects.Count != positions.Count)
-                throw new ArgumentException(
-                    "Number of objects must match number of positions.");
+                throw new ArgumentException("Number of objects must match number of starting positions.");
 
             Map = map;
             Objects = objects;
@@ -61,24 +49,13 @@ namespace Simulator
             _parsedMoves = DirectionParser.Parse(Moves);
 
             for (int i = 0; i < objects.Count; i++)
-            {
-                // TYLKO Creature da się poruszać
-                if (objects[i] is Creature creature)
-                {
-                    creature.AssignMap(map, positions[i]);
-                }
-                else
-                {
-                    map.Add(objects[i], positions[i]);
-                }
-            }
+                objects[i].AssignMap(map, positions[i]);
         }
 
         public void Turn()
         {
             if (Finished)
-                throw new InvalidOperationException(
-                    "Simulation already finished.");
+                throw new InvalidOperationException("Simulation already finished.");
 
             if (_parsedMoves.Length == 0)
             {
@@ -89,10 +66,7 @@ namespace Simulator
             IMappable obj = CurrentObject;
             Direction direction = _parsedMoves[_moveIndex];
 
-            if (obj is Creature creature)
-            {
-                creature.Go(direction);
-            }
+            obj.Go(direction);
 
             _moveIndex++;
 
