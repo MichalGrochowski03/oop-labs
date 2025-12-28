@@ -1,32 +1,35 @@
-﻿namespace Simulator;
+﻿using Simulator.Maps;
 
-public class Animals
+namespace Simulator
 {
-    private string _description = "";
-    private int _size;
-
-    public string Description
+    public class Animals : IMappable
     {
-        get => _description;
-        set => _description = Validator.Shortener(value, 3, 25, '#');
-    }
+        private string _description = "";
+        private int _size;
 
-    public int Size
-    {
-        get => _size;
-        set => _size = Validator.Limiter(value, 1, 5000);
-    }
+        public string Description
+        {
+            get => _description;
+            set => _description = Validator.Shortener(value, 3, 25, '#');
+        }
 
-    public Animals()
-    {
-        Description = "Unknown";
-        Size = 3;
-    }
+        public int Size
+        {
+            get => _size;
+            set => _size = Validator.Limiter(value, 1, 5000);
+        }
 
-    public virtual string Info => $"{Description} <{Size}>";
+        public Animals()
+        {
+            Description = "Unknown";
+            Size = 3;
+        }
 
-    public override string ToString()
-    {
-        return $"{GetType().Name.ToUpper()}: {Info}";
+        public virtual string Info => $"{Description} <{Size}>";
+
+        public virtual char Symbol => 'A';
+
+        public override string ToString()
+            => $"{GetType().Name.ToUpper()}: {Info}";
     }
 }

@@ -11,19 +11,24 @@ internal class Program
         Console.OutputEncoding = Encoding.UTF8;
 
         SmallSquareMap map = new(5);
+
         List<Creature> creatures = new()
         {
             new Orc("Gorbag"),
             new Elf("Elandor")
         };
+
+        List<IMappable> objects = creatures.Cast<IMappable>().ToList();
+
         List<Point> points = new()
         {
             new Point(2, 2),
             new Point(3, 1)
         };
+
         string moves = "dlrludl";
 
-        Simulation simulation = new(map, creatures, points, moves);
+        Simulation simulation = new(map, objects, points, moves);
         MapVisualizer mapVisualizer = new(simulation.Map);
 
         int turn = 1;
@@ -32,12 +37,21 @@ internal class Program
         {
             Console.Clear();
 
-            Creature creature = simulation.CurrentCreature;
-            Point pos = creature.Position ?? new Point(0, 0);
+            IMappable current = simulation.CurrentObject;
             string moveName = simulation.CurrentMoveName;
 
             Console.WriteLine($"Turn {turn}");
-            Console.WriteLine($"{creature} {pos} goes {moveName}:");
+
+            if (current is Creature creature)
+            {
+                Point pos = creature.Position ?? new Point(0, 0);
+                Console.WriteLine($"{creature} {pos} goes {moveName}:");
+            }
+            else
+            {
+                Console.WriteLine($"{current.Info} goes {moveName}:");
+            }
+
             Console.WriteLine();
 
             simulation.Turn();

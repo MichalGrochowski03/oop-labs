@@ -11,30 +11,26 @@ public class MapVisualizer
         _map = map;
     }
 
-    /// <summary>
-    /// Rysuje aktualny stan mapy w konsoli.
-    /// </summary>
     public void Draw()
     {
         int width = _map.SizeX;
         int height = _map.SizeY;
 
-        // Przygotuj znaki pól
         char[,] cells = new char[height, width];
 
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                var creatures = _map.At(x, y);
+                var objects = _map.At(x, y);
                 char symbol = ' ';
                 int count = 0;
 
-                foreach (var c in creatures)
+                foreach (var obj in objects)
                 {
                     count++;
                     if (count == 1)
-                        symbol = c.Symbol;
+                        symbol = obj.Symbol;
                     else
                     {
                         symbol = 'X';
@@ -46,7 +42,6 @@ public class MapVisualizer
             }
         }
 
-        // Górna krawędź
         Console.Write(Box.TopLeft);
         for (int x = 0; x < width; x++)
         {
@@ -56,7 +51,6 @@ public class MapVisualizer
         }
         Console.WriteLine(Box.TopRight);
 
-        // Środek
         for (int y = 0; y < height; y++)
         {
             Console.Write(Box.Vertical);
@@ -81,7 +75,6 @@ public class MapVisualizer
             }
         }
 
-        // Dolna krawędź
         Console.Write(Box.BottomLeft);
         for (int x = 0; x < width; x++)
         {

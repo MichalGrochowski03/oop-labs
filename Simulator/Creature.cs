@@ -1,6 +1,8 @@
-﻿namespace Simulator
+﻿using Simulator.Maps;
+
+namespace Simulator
 {
-    public abstract class Creature
+    public abstract class Creature : IMappable
     {
         private string _name = "";
         private int _level;
@@ -17,18 +19,16 @@
             init => _level = Validator.Limiter(value, 1, 10);
         }
 
-
-        public Simulator.Maps.Map? CurrentMap { get; private set; }
-
+        public Map? CurrentMap { get; private set; }
         public Point? Position { get; private set; }
 
-        public Creature()
+        protected Creature()
         {
             Name = "Unknown";
             Level = 1;
         }
 
-        public Creature(string name, int level = 1)
+        protected Creature(string name, int level = 1)
         {
             Name = name;
             Level = level;
@@ -50,13 +50,16 @@
             CurrentMap.Move(this, from, to);
             Position = to;
         }
-        public void AssignMap(Simulator.Maps.Map map, Point start)
+
+        public void AssignMap(Map map, Point start)
         {
             if (CurrentMap != null)
-                throw new InvalidOperationException("Creature is already assigned to a map.");
+                throw new InvalidOperationException(
+                    "Creature is already assigned to a map.");
 
             if (!map.Exist(start))
-                throw new ArgumentException("Start position is outside the map.");
+                throw new ArgumentException(
+                    "Start position is outside the map.");
 
             map.Add(this, start);
 

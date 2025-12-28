@@ -1,13 +1,14 @@
-﻿namespace Simulator.Maps
+﻿using Simulator;
+
+namespace Simulator.Maps
 {
     public abstract class Map
     {
         public int SizeX { get; }
         public int SizeY { get; }
 
-        private readonly Dictionary<Point, HashSet<Creature>> _creatures =
-            new Dictionary<Point, HashSet<Creature>>();
-
+        private readonly Dictionary<Point, HashSet<IMappable>> _objects =
+            new Dictionary<Point, HashSet<IMappable>>();
 
         protected Map(int sizeX, int sizeY)
         {
@@ -28,49 +29,47 @@
             => p.X >= 0 && p.X < SizeX &&
                p.Y >= 0 && p.Y < SizeY;
 
-
-        public void Add(Creature creature, Point p)
+        public void Add(IMappable obj, Point p)
         {
             if (!Exist(p))
                 throw new ArgumentException("Point is outside the map.");
 
-            if (!_creatures.TryGetValue(p, out var set))
+            if (!_objects.TryGetValue(p, out var set))
             {
-                set = new HashSet<Creature>();
-                _creatures[p] = set;
+                set = new HashSet<IMappable>();
+                _objects[p] = set;
             }
 
-            set.Add(creature);
+            set.Add(obj);
         }
 
-        public void Remove(Creature creature, Point p)
+        public void Remove(IMappable obj, Point p)
         {
-            if (_creatures.TryGetValue(p, out var set))
+            if (_objects.TryGetValue(p, out var set))
             {
-                set.Remove(creature);
+                set.Remove(obj);
 
                 if (set.Count == 0)
-                    _creatures.Remove(p);
+                    _objects.Remove(p);
             }
         }
 
-        public void Move(Creature creature, Point from, Point to)
+        public void Move(IMappable obj, Point from, Point to)
         {
-            Remove(creature, from);
-            Add(creature, to);
+            Remove(obj, from);
+            Add(obj, to);
         }
 
-        public IEnumerable<Creature> At(Point p)
+        public IEnumerable<IMappable> At(Point p)
         {
-            if (_creatures.TryGetValue(p, out var set))
+            if (_objects.TryGetValue(p, out var set))
                 return set;
 
-            return Array.Empty<Creature>();
+            return Array.Empty<IMappable>();
         }
 
-        public IEnumerable<Creature> At(int x, int y)
+        public IEnumerable<IMappable> At(int x, int y)
             => At(new Point(x, y));
-
 
         public virtual Point Next(Point p, Direction direction)
         {
